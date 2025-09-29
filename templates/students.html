@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Students | Face Logged</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    body { background: #0d0d0d; color: #fff; font-family: 'Segoe UI', sans-serif; }
+    .neon-text { font-family: 'Orbitron', sans-serif; color: #00f9ff; text-shadow: 0 0 5px #00f9ff, 0 0 15px #00f9ff; }
+    .table-container { margin: 50px auto; max-width: 95%; }
+    table { color: #fff; border: 1px solid #00f9ff; }
+    th, td { text-align: center; vertical-align: middle; }
+    th { background: #00f9ff33; }
+    tr:hover { background: #00ffa233; color: #000; }
+    .btn-cyber { background: linear-gradient(90deg, #00f9ff, #00ffa2); border: none; color: #000; font-weight: bold; border-radius: 8px; padding: 5px 15px; box-shadow: 0 0 10px #00f9ff; transition: 0.3s; text-decoration: none; }
+    .btn-cyber:hover { background: linear-gradient(90deg, #00ffa2, #00f9ff); box-shadow: 0 0 20px #00ffa2; color: #000; }
+</style>
+</head>
+<body>
+<div class="container table-container">
+    <h2 class="neon-text mb-4 text-center">All Students</h2>
+    <div class="mb-3">
+        <a href="{{ url_for('add_student') }}" class="btn btn-cyber">➕ Add Student</a>
+    </div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Student ID</th>
+                <th>Student Number</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Modules</th>
+                <th>Date Created</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr>
+                <td>{{ student[0] }}</td>
+                <td>{{ student[3] }}</td>
+                <td>{{ student[1] }} {{ student[2] }}</td>
+                <td>{{ student[4] }}</td>
+                <td>
+                    {% set student_id = student[0] %}
+                    {% set modules_list = [] %}
+                    {% for module in get_modules_for_student(student_id) %}
+                        {% set _ = modules_list.append(module[1]) %}
+                    {% endfor %}
+                    {{ modules_list | join(', ') }}
+                </td>
+                <td>{{ student[5] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
